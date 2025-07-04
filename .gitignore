@@ -107,3 +107,8 @@ coverage.xml
 .trae/
 .windsurf/
 .github/instructions/
+
+# 特定文件
+.env.example
+AGENTS.md
+CLAUDE.md
