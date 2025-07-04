@@ -1,0 +1,109 @@
+# Python相关
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 虚拟环境
+venv/
+ENV/
+env/
+
+# Flask相关
+instance/
+.webassets-cache
+flask_session/
+
+# 数据库
+*.sqlite
+*.db
+*.db-journal
+
+# 日志文件
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dev-debug.log
+
+# 环境变量和配置
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.flaskenv
+
+# 依赖目录
+node_modules/
+
+# 编辑器和IDE
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.sublime-project
+
+# 操作系统相关
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.directory
+
+# 临时文件
+*.tmp
+*.bak
+*.swp
+*~.nib
+*.pyc
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# 迁移相关（如果需要忽略）
+# migrations/
+
+# 自定义忽略
+.taskmaster/
+.cursor/
+.clinerules/
+.roo/
+.roomodes
+.trae/
+.windsurf/
+.github/instructions/

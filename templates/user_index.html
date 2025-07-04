@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>实验室仪器设备管理系统 - 用户首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{{ url_for('user_index') }}">设备管理系统</a>
+    <span class="navbar-text ml-3">欢迎，{{ current_user.username }}</span>
+    <div class="ml-auto">
+        <a href="{{ url_for('user_index') }}" class="btn btn-outline-info btn-sm mr-2">首页</a>
+        <a href="{{ url_for('user_borrow_records') }}" class="btn btn-outline-primary btn-sm mr-2">我的借用记录</a>
+        <a href="{{ url_for('user_notifications') }}" class="btn btn-outline-warning btn-sm mr-2">消息提醒</a>
+        <a href="{{ url_for('logout') }}" class="btn btn-outline-secondary btn-sm">退出登录</a>
+    </div>
+</nav>
+<div class="container mt-4">
+    <h3>可借用设备列表</h3>
+    <form class="form-inline mb-3" method="get">
+        <label class="mr-2">按状态筛选：</label>
+        <select name="status" class="form-control mr-2">
+            <option value="" {% if not status %}selected{% endif %}>全部</option>
+            <option value="可用" {% if status=='可用' %}selected{% endif %}>可用</option>
+            <option value="借出" {% if status=='借出' %}selected{% endif %}>借出</option>
+            <option value="维修中" {% if status=='维修中' %}selected{% endif %}>维修中</option>
+            <option value="报废" {% if status=='报废' %}selected{% endif %}>报废</option>
+        </select>
+        <input type="text" name="q" class="form-control mr-2" placeholder="设备名称/编号" value="{{ q|default('') }}">
+        <button type="submit" class="btn btn-info btn-sm">筛选</button>
+    </form>
+    <table class="table table-bordered table-hover mt-3">
+        <thead class="thead-light">
+        <tr>
+            <th>设备编号</th>
+            <th>设备名称</th>
+            <th>型号</th>
+            <th>购置日期</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for eq in equipments %}
+            <tr>
+                <td>{{ eq.code }}</td>
+                <td>{{ eq.name }}</td>
+                <td>{{ eq.model }}</td>
+                <td>{{ eq.purchase_date }}</td>
+                <td>
+                    {% if eq.status == '可用' %}
+                        <span class="badge badge-success">可用</span>
+                    {% elif eq.status == '借出' %}
+                        <span class="badge badge-warning">借出</span>
+                    {% elif eq.status == '维修中' %}
+                        <span class="badge badge-info">维修中</span>
+                    {% elif eq.status == '报废' %}
+                        <span class="badge badge-secondary">报废</span>
+                    {% else %}
+                        {{ eq.status }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if eq.status == '可用' %}
+                        <a href="{{ url_for('user_borrow', equipment_id=eq.id) }}" class="btn btn-sm btn-success">申请借用</a>
+                    {% else %}
+                        <span class="text-muted">不可借用</span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+// 首页加载后自动获取并弹窗展示最新3条消息提醒
+fetch("{{ url_for('user_notifications') }}")
+  .then(resp => resp.json())
+  .then(data => {
+    if (data && data.length > 0) {
+      let msg = data.slice(0, 3).map(n => `${n['发送时间']} | ${n['类型']} | ${n['设备名称']}`).join('\n');
+      alert('最新消息提醒：\n' + msg);
+    }
+  });
+</script>
+</body>
+</html> 

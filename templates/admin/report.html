@@ -1,0 +1,60 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+<div class="container mt-4">
+  <h2>统计报表</h2>
+  <hr>
+  <h4>设备状态统计</h4>
+  <table class="table table-bordered">
+    <thead><tr><th>状态</th><th>数量</th></tr></thead>
+    <tbody>
+      {% for status, count in equipment_status.items() %}
+      <tr><td>{{ status }}</td><td>{{ count }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h4>维护到期设备（未来7天）</h4>
+  <table class="table table-bordered">
+    <thead><tr><th>设备名称</th><th>设备编号</th><th>下次维护日期</th><th>责任人</th></tr></thead>
+    <tbody>
+      {% for m in maintenance_due %}
+      <tr>
+        <td>{{ m['设备名称'] }}</td>
+        <td>{{ m['设备编号'] }}</td>
+        <td>{{ m['下次维护日期'] }}</td>
+        <td>{{ m['责任人'] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h4>借用超期设备</h4>
+  <table class="table table-bordered">
+    <thead><tr><th>设备名称</th><th>设备编号</th><th>借用人</th><th>预计归还时间</th></tr></thead>
+    <tbody>
+      {% for o in borrow_overdue %}
+      <tr>
+        <td>{{ o['设备名称'] }}</td>
+        <td>{{ o['设备编号'] }}</td>
+        <td>{{ o['借用人'] }}</td>
+        <td>{{ o['预计归还时间'] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h4>设备使用率</h4>
+  <table class="table table-bordered">
+    <thead><tr><th>设备名称</th><th>设备编号</th><th>使用率</th></tr></thead>
+    <tbody>
+      {% for u in usage_rate %}
+      <tr>
+        <td>{{ u['设备名称'] }}</td>
+        <td>{{ u['设备编号'] }}</td>
+        <td>{{ u['使用率'] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %} 
