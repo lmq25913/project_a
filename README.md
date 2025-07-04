@@ -65,15 +65,10 @@ python init_users.py
 5. 运行应用
 
 ```bash
-flask run
+python app.py
 ```
 
 应用将在 http://127.0.0.1:5000/ 启动
-
-## 初始账户
-
-- 管理员账户: admin / password
-- 普通用户: user / password
 
 ## 使用指南
 
