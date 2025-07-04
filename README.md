@@ -21,8 +21,10 @@
 
 1. 克隆或下载项目到本地
 
+```bash
 git clone git@github.com:lmq25913/project_a.git
 git clone https://github.com/lmq25913/project_a.git
+```
 
 2. 创建并激活虚拟环境
 
