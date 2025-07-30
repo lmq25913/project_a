@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}实验室仪器设备管理系统{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <!-- Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- 自定义样式 -->
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            background-attachment: fixed;
+            background-size: cover;
+            min-height: 100vh;
+        }
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.9) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        .container {
+            padding-top: 20px;
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    {% block navbar %}
+    <!-- 如果页面需要导航栏，可以在这里添加 -->
+    {% endblock %}
+
+    {% block body %}
+    <!-- 页面内容将被子模板替换 -->
+    {% endblock %}
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html> 

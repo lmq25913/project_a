@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>实验室仪器设备管理系统 - 用户首页</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}实验室仪器设备管理系统 - 用户首页{% endblock %}
+
+{% block navbar %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="{{ url_for('user_index') }}">设备管理系统</a>
     <span class="navbar-text ml-3">欢迎，{{ current_user.username }}</span>
@@ -17,6 +13,9 @@
         <a href="{{ url_for('logout') }}" class="btn btn-outline-secondary btn-sm">退出登录</a>
     </div>
 </nav>
+{% endblock %}
+
+{% block body %}
 <div class="container mt-4">
     <h3>可借用设备列表</h3>
     <form class="form-inline mb-3" method="get">
@@ -45,25 +44,25 @@
         <tbody>
         {% for eq in equipments %}
             <tr>
-                <td>{{ eq.code }}</td>
+                <td>{{ eq.number }}</td>
                 <td>{{ eq.name }}</td>
                 <td>{{ eq.model }}</td>
                 <td>{{ eq.purchase_date }}</td>
                 <td>
-                    {% if eq.status == '可用' %}
+                    {% if eq.display_status == '可用' %}
                         <span class="badge badge-success">可用</span>
-                    {% elif eq.status == '借出' %}
-                        <span class="badge badge-warning">借出</span>
-                    {% elif eq.status == '维修中' %}
+                    {% elif eq.display_status == '借用中' %}
+                        <span class="badge badge-warning">借用中</span>
+                    {% elif eq.display_status == '维修中' %}
                         <span class="badge badge-info">维修中</span>
-                    {% elif eq.status == '报废' %}
+                    {% elif eq.display_status == '报废' %}
                         <span class="badge badge-secondary">报废</span>
                     {% else %}
-                        {{ eq.status }}
+                        {{ eq.display_status }}
                     {% endif %}
                 </td>
                 <td>
-                    {% if eq.status == '可用' %}
+                    {% if eq.display_status == '可用' %}
                         <a href="{{ url_for('user_borrow', equipment_id=eq.id) }}" class="btn btn-sm btn-success">申请借用</a>
                     {% else %}
                         <span class="text-muted">不可借用</span>
@@ -74,6 +73,9 @@
         </tbody>
     </table>
 </div>
+{% endblock %}
+
+{% block scripts %}
 <script>
 // 首页加载后自动获取并弹窗展示最新3条消息提醒
 fetch("{{ url_for('user_notifications') }}")
@@ -85,5 +87,4 @@ fetch("{{ url_for('user_notifications') }}")
     }
   });
 </script>
-</body>
-</html> 
+{% endblock %} 

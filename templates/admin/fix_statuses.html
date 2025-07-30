@@ -1,0 +1,77 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>设备状态一致性检查</h1>
+            <p>本功能用于检测和修复设备状态的一致性问题。</p>
+            
+            {% if count > 0 %}
+            <div class="alert alert-warning">
+                <strong>发现 {{ count }} 个设备状态不一致！</strong> 
+                <p>下表列出了所有状态不一致的设备。点击"修复所有问题"按钮可自动修复。</p>
+            </div>
+            
+            <form method="POST">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-primary" onclick="return confirm('确定要修复所有设备状态问题吗？');">
+                    <i class="glyphicon glyphicon-wrench"></i> 修复所有问题
+                </button>
+            </form>
+            <br>
+            
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>设备ID</th>
+                        <th>设备编号</th>
+                        <th>设备名称</th>
+                        <th>当前状态</th>
+                        <th>期望状态</th>
+                        <th>问题原因</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for equipment in inconsistent_equipments %}
+                    <tr>
+                        <td>{{ equipment.id }}</td>
+                        <td>{{ equipment.number }}</td>
+                        <td>{{ equipment.name }}</td>
+                        <td>
+                            {% if equipment.current_status == '借用中' %}
+                            <span class="label label-danger">{{ equipment.current_status }}</span>
+                            {% else %}
+                            <span class="label label-success">{{ equipment.current_status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if equipment.expected_status == '借用中' %}
+                            <span class="label label-danger">{{ equipment.expected_status }}</span>
+                            {% else %}
+                            <span class="label label-success">{{ equipment.expected_status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ equipment.reason }}</td>
+                        <td>
+                            <a href="/admin/fix_equipment/{{ equipment.number }}" class="btn btn-xs btn-primary">
+                                <i class="glyphicon glyphicon-wrench"></i> 修复此设备
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="alert alert-success">
+                <strong>恭喜！</strong> 所有设备状态都是一致的，无需修复。
+            </div>
+            {% endif %}
+            
+            <a href="{{ url_for('admin.index') }}" class="btn btn-default">
+                <i class="glyphicon glyphicon-arrow-left"></i> 返回管理首页
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %} 

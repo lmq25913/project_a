@@ -1,12 +1,21 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>申请借用设备</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}申请借用设备 - 实验室仪器设备管理系统{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{{ url_for('user_index') }}">设备管理系统</a>
+    <span class="navbar-text ml-3">欢迎，{{ current_user.username }}</span>
+    <div class="ml-auto">
+        <a href="{{ url_for('user_index') }}" class="btn btn-outline-info btn-sm mr-2">首页</a>
+        <a href="{{ url_for('user_borrow_records') }}" class="btn btn-outline-primary btn-sm mr-2">我的借用记录</a>
+        <a href="{{ url_for('user_notifications') }}" class="btn btn-outline-warning btn-sm mr-2">消息提醒</a>
+        <a href="{{ url_for('logout') }}" class="btn btn-outline-secondary btn-sm">退出登录</a>
+    </div>
+</nav>
+{% endblock %}
+
+{% block body %}
 <div class="container mt-5">
     <h4>申请借用设备</h4>
     <div class="card mt-3">
@@ -14,7 +23,7 @@
             <form method="post">
                 <div class="form-group">
                     <label>设备编号</label>
-                    <input type="text" class="form-control" value="{{ equipment.code }}" readonly>
+                    <input type="text" class="form-control" value="{{ equipment.number }}" readonly>
                 </div>
                 <div class="form-group">
                     <label>设备名称</label>
@@ -38,5 +47,4 @@
         </div>
     </div>
 </div>
-</body>
-</html> 
+{% endblock %} 

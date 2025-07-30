@@ -16,6 +16,7 @@
 
 - Python 3.11.3
 - pip
+- MySQL数据库服务器
 
 ### 安装步骤
 
@@ -45,19 +46,17 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. 初始化数据库
+4. 连接到现有数据库
+
+本项目已配置为连接到MySQL数据库code2025，使用以下连接信息：
+- 数据库：code2025
+- 用户名：root
+- 密码：l2669906091
+- 主机：localhost
+
+可以通过以下命令测试数据库连接：
 
 ```bash
-# 应用数据库迁移
-flask db upgrade
-
-# 或者手动创建数据库表
-flask shell
->>> from models import db
->>> db.create_all()
->>> exit()
-
-# 初始化用户数据
 python init_users.py
 ```
 
@@ -84,20 +83,10 @@ python app.py
    - 查看个人借用历史
    - 接收通知
 
-## 数据导入
-
-系统支持从CSV文件导入数据:
-- sample_users.csv - 用户数据
-- sample_equipments.csv - 设备数据
-- sample_maintenances.csv - 维护记录
-- sample_usages.csv - 使用记录
-- sample_notifications.csv - 通知数据
-
 ## 项目结构
 
 - `app.py` - 主应用文件
 - `models.py` - 数据库模型
 - `config.py` - 配置文件
-- `init_users.py` - 初始化用户脚本
-- `migrations/` - 数据库迁移文件
+- `init_users.py` - 数据库连接测试脚本
 - `templates/` - HTML模板 

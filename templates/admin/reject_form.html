@@ -1,0 +1,30 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title">拒绝借用申请</h3>
+                </div>
+                <div class="panel-body">
+                    <form method="POST">
+                        <div class="form-group">
+                            <label for="reason">拒绝原因</label>
+                            <textarea class="form-control" id="reason" name="reason" rows="5" required></textarea>
+                            <p class="help-block">请填写拒绝此借用申请的原因，该原因将通知给申请人。</p>
+                        </div>
+                        {% if single_id is defined %}
+                        <input type="hidden" name="id" value="{{ single_id }}">
+                        {% endif %}
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-danger">确认拒绝</button>
+                            <a href="{{ url_for('.index_view') }}" class="btn btn-default">取消</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

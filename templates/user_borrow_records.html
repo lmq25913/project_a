@@ -1,12 +1,21 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>我的借用记录</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}我的借用记录 - 实验室仪器设备管理系统{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{{ url_for('user_index') }}">设备管理系统</a>
+    <span class="navbar-text ml-3">欢迎，{{ current_user.username }}</span>
+    <div class="ml-auto">
+        <a href="{{ url_for('user_index') }}" class="btn btn-outline-info btn-sm mr-2">首页</a>
+        <a href="{{ url_for('user_borrow_records') }}" class="btn btn-outline-primary btn-sm mr-2">我的借用记录</a>
+        <a href="{{ url_for('user_notifications') }}" class="btn btn-outline-warning btn-sm mr-2">消息提醒</a>
+        <a href="{{ url_for('logout') }}" class="btn btn-outline-secondary btn-sm">退出登录</a>
+    </div>
+</nav>
+{% endblock %}
+
+{% block body %}
 <div class="container mt-5">
     <h4>我的借用记录</h4>
     <a href="{{ url_for('user_index') }}" class="btn btn-secondary mb-3">返回首页</a>
@@ -19,28 +28,58 @@
             <th>预计归还时间</th>
             <th>实际归还时间</th>
             <th>状态</th>
-            <th>备注</th>
+            <th>操作</th>
         </tr>
         </thead>
         <tbody>
         {% for record in records %}
             <tr>
-                <td>{{ record.equipment.code }}</td>
+                <td>{{ record.equipment.number }}</td>
                 <td>{{ record.equipment.name }}</td>
                 <td>{{ record.borrow_time }}</td>
                 <td>{{ record.expected_return_time }}</td>
                 <td>{{ record.actual_return_time or '-' }}</td>
                 <td>
-                    {% if record.actual_return_time %}
+                    {% if record.status == '审核通过' %}
+                        <span class="badge badge-warning">使用中</span>
+                    {% elif record.status == '归还完成' %}
                         <span class="badge badge-success">已归还</span>
+                    {% elif record.status == '待审核' %}
+                        <span class="badge badge-secondary">申请审核中</span>
+                    {% elif record.status == '审核不通过' %}
+                        <span class="badge badge-danger">未通过</span>
                     {% else %}
-                        <span class="badge badge-warning">未归还</span>
-                        <form method="post" action="{{ url_for('user_return', usage_id=record.id) }}" style="display:inline;">
-                            <button type="submit" class="btn btn-sm btn-primary ml-2">归还</button>
-                        </form>
+                        <span class="badge badge-dark">{{ record.status }}</span>
                     {% endif %}
                 </td>
-                <td>{{ record.remark or '-' }}</td>
+                <td>
+                    {% if record.status == '审核通过' %}
+                        {% if record.return_status == '待审核' %}
+                            <span class="text-info">归还申请审核中</span>
+                        {% elif record.return_status == '审核通过' %}
+                            <span class="text-success">归还已完成</span>
+                        {% elif record.return_status == '审核不通过' %}
+                            <span class="text-danger">归还申请被拒绝</span>
+                            <form method="post" action="{{ url_for('user_return', usage_id=record.id) }}" style="display:inline;margin-left:5px;">
+                                <button type="submit" class="btn btn-sm btn-primary">重新申请归还</button>
+                            </form>
+                        {% else %}
+                            <form method="post" action="{{ url_for('user_return', usage_id=record.id) }}" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-primary">申请归还</button>
+                            </form>
+                        {% endif %}
+                    {% elif record.status == '归还完成' %}
+                        <span class="text-success">归还已完成</span>
+                    {% elif record.status == '待审核' %}
+                        <span class="text-muted">等待管理员审核申请</span>
+                    {% elif record.status == '审核不通过' %}
+                        {% if record.reason %}
+                        <span class="text-danger" title="{{ record.reason }}">未通过原因：{{ record.reason }}</span>
+                        {% else %}
+                        <span class="text-danger">申请未通过</span>
+                        {% endif %}
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
         </tbody>
@@ -59,5 +98,4 @@
         </ul>
     </nav>
 </div>
-</body>
-</html> 
+{% endblock %} 
